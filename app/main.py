@@ -6,7 +6,7 @@ app = FastAPI(title="Task Manager API")
 
 Base.metadata.create_all(bind=engine)
 
-@app.get("")
+@app.get("/")
 def read_root():
     return {"message": "Task Manager API is running"}
 
