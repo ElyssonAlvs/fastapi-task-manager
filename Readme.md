@@ -119,8 +119,8 @@ Once running, access:
 
 | Method | Endpoint    | Description       |
 | ------ | ----------- | ----------------- |
-| POST   | /tasks      | Create a new task |
-| GET    | /tasks      | List all tasks    |
+| POST   | /tasks/     | Create a new task |
+| GET    | /tasks/     | List all tasks    |
 | GET    | /tasks/{id} | Get task by ID    |
 | PUT    | /tasks/{id} | Update a task     |
 | DELETE | /tasks/{id} | Delete a task     |
