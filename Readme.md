@@ -1,19 +1,15 @@
 # 🚀 FastAPI Task Manager API
 
 A simple and well-structured Task Manager API built with FastAPI.
-This project demonstrates backend fundamentals such as CRUD operations, database integration, filtering, and clean architecture.
+This project demonstrates backend fundamentals such as API structure, database integration, and clean architecture.
 
 ---
 
 ## 📌 Features
 
-- Create tasks
-- List all tasks
-- Get task by ID
-- Update tasks
-- Delete tasks
-- Filter tasks by status
-- Pagination support
+- Create tasks (`POST /tasks/`)
+- List tasks with pagination (`GET /tasks/`)
+- Database session handling with `Depends`
 - Automatic API documentation (Swagger)
 
 ---
@@ -112,32 +108,31 @@ Once running, access:
 
 ---
 
-## 📌 API Endpoints (planned)
+## 📌 API Endpoints
 
 ### Tasks
 
 
-| Method | Endpoint    | Description       |
-| ------ | ----------- | ----------------- |
-| POST   | /tasks/     | Create a new task |
-| GET    | /tasks/     | List all tasks    |
-| GET    | /tasks/{id} | Get task by ID    |
-| PUT    | /tasks/{id} | Update a task     |
-| DELETE | /tasks/{id} | Delete a task     |
+| Method | Endpoint | Description                | Status      |
+| ------ | -------- | -------------------------- | ----------- |
+| POST   | /tasks/  | Create a new task          | Implemented |
+| GET    | /tasks/  | List tasks (`skip`,`limit`) | Implemented |
+| GET    | /tasks/{id} | Get task by ID          | Planned     |
+| PUT    | /tasks/{id} | Update a task           | Planned     |
+| DELETE | /tasks/{id} | Delete a task           | Planned     |
 
 
 ---
 
-## 🔍 Query Parameters (planned)
+## 🔍 Query Parameters
 
-- `status` → filter tasks (pending, done)
-- `skip` → pagination offset
-- `limit` → pagination limit
+- `skip` -> pagination offset
+- `limit` -> pagination limit
 
 Example:
 
 ```
-/tasks?status=pending&skip=0&limit=10
+/tasks?skip=0&limit=10
 ```
 
 ---
