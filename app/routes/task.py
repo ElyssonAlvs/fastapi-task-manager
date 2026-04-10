@@ -1,25 +1,22 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, desc
 from typing import Annotated, List, Optional
 from app.database import get_db
 from app.models.task import Task
 from app.schemas.task import TaskCreate, TaskResponse, TaskUpdate
+from app.services import task_service
 
-router = APIRouter(prefix="/tasks", tags=["Tasks"])
+router = APIRouter(prefix="/v1/tasks", tags=["Tasks"])
 
 
 @router.post("/", response_model=TaskResponse)
 def create_task(task: TaskCreate, db: Annotated[Session, Depends(get_db)]):
-    db_task = Task(title=task.title, description=task.description)
-    db.add(db_task)
-    db.commit()
-    db.refresh(db_task)
-    return db_task
+    return task_service.create_task(db, title=task.title, description=task.description)
 
 
 @router.get("/{task_id}", response_model=TaskResponse)
 def get_task(task_id: int, db: Annotated[Session, Depends(get_db)]):
-    task = db.query(Task).filter(Task.id == task_id).first()
+    task = task_service.get_task_by_id(db, task_id)
 
     if not task:
         raise HTTPException(
@@ -36,7 +33,7 @@ def update_task(
     task_update: TaskUpdate,
     db: Annotated[Session, Depends(get_db)]
 ):
-    task = db.query(Task).filter(Task.id == task_id).first()
+    task = task_service.get_task_by_id(db, task_id)
 
     if not task:
         raise HTTPException(
@@ -72,7 +69,7 @@ def delete_task(task_id: int, db: Annotated[Session, Depends(get_db)]):
 @router.get("/", response_model=List[TaskResponse])
 def get_tasks(
     db: Annotated[Session, Depends(get_db)],
-    status: Annotated[Optional[str], Query(pattern="^(pending|done)$")] = None,
+    status: Annotated[Optional[str], Query(pattern="^(pending|done|in_progress)$")] = None,
     skip: Annotated[int, Query(ge=0)] = 0,
     limit: Annotated[int, Query(le=100)] = 10
 ):
@@ -80,6 +77,10 @@ def get_tasks(
 
     if status:
         query = query.filter(Task.status == status)
-    tasks = query.offset(skip).limit(limit).all()
+        
+    tasks = query.order_by(desc(Task.created_at)).offset(skip).limit(limit).all()
 
-    return tasks
+    return {
+        "data": tasks,
+        "count": len(tasks)
+    }
