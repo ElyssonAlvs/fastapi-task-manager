@@ -7,20 +7,26 @@ This project demonstrates backend fundamentals such as API structure, database i
 
 ## 📌 Features
 
-- Create tasks (`POST /tasks/`)
-- List tasks with pagination (`GET /tasks/`)
-- Database session handling with `Depends`
-- Automatic API documentation (Swagger)
+- ✅ Create tasks (`POST /tasks/`)
+- ✅ List tasks with pagination and status filtering (`GET /tasks/`)
+- ✅ Retrieve, update, and delete tasks by ID
+- ✅ Status management (pending, done, in_progress)
+- ✅ Input validation with Pydantic and field constraints
+- ✅ Type hints with `Annotated` (FastAPI best practices)
+- ✅ Database session handling with `Depends`
+- ✅ Automatic API documentation (Swagger & ReDoc)
 
 ---
 
 ## 🧱 Tech Stack
 
 - Python 3.10+
-- FastAPI
-- SQLAlchemy
+- FastAPI (with modern best practices)
+- SQLAlchemy ORM
+- Pydantic (data validation)
 - SQLite
-- Uvicorn
+- Uvicorn (ASGI server)
+- Pytest (testing)
 
 ---
 
@@ -115,24 +121,28 @@ Once running, access:
 
 | Method | Endpoint | Description                | Status      |
 | ------ | -------- | -------------------------- | ----------- |
-| POST   | /tasks/  | Create a new task          | Implemented |
-| GET    | /tasks/  | List tasks (`skip`,`limit`) | Implemented |
-| GET    | /tasks/{id} | Get task by ID          | Planned     |
-| PUT    | /tasks/{id} | Update a task           | Planned     |
-| DELETE | /tasks/{id} | Delete a task           | Planned     |
+| POST   | /tasks/  | Create a new task          | ✅ Implemented |
+| GET    | /tasks/  | List tasks with filters    | ✅ Implemented |
+| GET    | /tasks/{id} | Get task by ID          | ✅ Implemented |
+| PUT    | /tasks/{id} | Update a task           | ✅ Implemented |
+| DELETE | /tasks/{id} | Delete a task           | ✅ Implemented |
 
 
 ---
 
 ## 🔍 Query Parameters
 
-- `skip` -> pagination offset
-- `limit` -> pagination limit
+- `status` -> filter by status (`pending`, `done`) - optional
+- `skip` -> pagination offset (default: 0, min: 0)
+- `limit` -> pagination limit (default: 10, max: 100)
 
-Example:
+Examples:
 
 ```
-/tasks?skip=0&limit=10
+/tasks                                    # list all tasks
+/tasks?status=pending                     # list pending tasks
+/tasks?status=done&skip=0&limit=10        # list done tasks with pagination
+/tasks?skip=20&limit=5                    # pagination only
 ```
 
 ---
@@ -149,13 +159,26 @@ This project focuses on:
 
 ---
 
+## 🧪 Testing
+
+Run tests with Pytest:
+
+```
+pytest test.py -v
+```
+
+---
+
 ## 🚀 Future Improvements
 
 - Authentication (JWT)
 - Docker support
-- Unit tests with Pytest
+- Comprehensive unit tests with Pytest
 - PostgreSQL integration
-- Deployment
+- Request logging and monitoring
+- Rate limiting
+- API versioning
+- Deployment to cloud (Heroku, AWS, etc.)
 
 ---
 
