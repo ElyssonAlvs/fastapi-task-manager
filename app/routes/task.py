@@ -26,6 +26,7 @@ def get_tasks(
 ):
     return db.query(Task).offset(skip).limit(limit).all()
 
+
 @router.get("/{task_id}", response_model=TaskResponse)
 def get_task(task_id: int, db: Session = Depends(get_db)):
     task = db.query(Task).filter(Task.id == task_id).first()
@@ -37,6 +38,7 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
         )
 
     return task
+
 
 @router.put("/{task_id}", response_model=TaskResponse)
 def update_task(
@@ -73,5 +75,3 @@ def delete_task(task_id: int, db: Session = Depends(get_db)):
 
     db.delete(task)
     db.commit()
-
-    return
