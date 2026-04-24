@@ -159,14 +159,6 @@ This project focuses on:
 
 ---
 
-## 🧪 Testing
-
-Run tests with Pytest:
-
-```
-pytest test.py -v
-```
-
 ---
 
 ## 🚀 Future Improvements
