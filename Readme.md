@@ -159,8 +159,6 @@ This project focuses on:
 
 ---
 
----
-
 ## 🚀 Future Improvements
 
 - Authentication (JWT)
