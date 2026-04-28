@@ -1,5 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum
-from datetime import datetime
+from sqlalchemy import Column, Integer, String, Enum
 import enum
 from app.database import Base
     
@@ -16,4 +15,3 @@ class Task(Base):
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
     status = Column(Enum(TaskStatus), default=TaskStatus.pending)
-    created_at = Column(DateTime, default=datetime.utcnow)

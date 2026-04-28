@@ -1,8 +1,10 @@
 from sqlalchemy.orm import Session
-from app.models.task import Task
+from app.models.task import Task, TaskStatus
+
 
 def create_task(db: Session, title: str, description: str | None):
-    task = Task(title=title, description=description)
+    task = Task(title=title, description=description,
+                status=TaskStatus.pending)
     db.add(task)
     db.commit()
     db.refresh(task)

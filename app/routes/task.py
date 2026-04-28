@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.orm import Session, desc
+from sqlalchemy import desc
+from sqlalchemy.orm import Session
 from typing import Annotated, List, Optional
 from app.database import get_db
 from app.models.task import Task
@@ -69,7 +70,8 @@ def delete_task(task_id: int, db: Annotated[Session, Depends(get_db)]):
 @router.get("/", response_model=List[TaskResponse])
 def get_tasks(
     db: Annotated[Session, Depends(get_db)],
-    status: Annotated[Optional[str], Query(pattern="^(pending|done|in_progress)$")] = None,
+    status: Annotated[Optional[str], Query(
+        pattern="^(pending|done|in_progress)$")] = None,
     skip: Annotated[int, Query(ge=0)] = 0,
     limit: Annotated[int, Query(le=100)] = 10
 ):
@@ -77,10 +79,7 @@ def get_tasks(
 
     if status:
         query = query.filter(Task.status == status)
-        
-    tasks = query.order_by(desc(Task.created_at)).offset(skip).limit(limit).all()
 
-    return {
-        "data": tasks,
-        "count": len(tasks)
-    }
+    tasks = query.offset(skip).limit(limit).all()
+
+    return tasks

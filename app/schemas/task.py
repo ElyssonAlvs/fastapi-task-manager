@@ -1,7 +1,12 @@
-from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, Field
 from enum import Enum
+
+
+class TaskStatus(str, Enum):
+    pending = "pending"
+    done = "done"
+    in_progress = "in_progress"
 
 
 class TaskBase(BaseModel):
@@ -16,7 +21,6 @@ class TaskCreate(TaskBase):
 class TaskResponse(TaskBase):
     id: int
     status: TaskStatus
-    created_at: datetime
 
     class Config:
         from_attributes = True
@@ -28,11 +32,7 @@ class TaskUpdate(BaseModel):
     status: Optional[str] = Field(
         None, pattern="^(pending|done|in_progress)$")
 
-class TaskStatus(str, Enum):
-    pending = "pending"
-    done = "done"
-    in_progress = "in_progress"
-    
+
 class TaskListResponse(BaseModel):
     tasks: list[TaskResponse]
     count: int
